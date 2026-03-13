@@ -1,0 +1,7 @@
+openclaw
+fastapi
+uvicorn
+python-telegram-bot
+requests
+schedule
+python-dotenv
