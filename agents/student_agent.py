@@ -1,5 +1,6 @@
 from llm.groq_client import ask_llm
 from agents.tools_registry import TOOLS
+from agents.openclaw_agent import openclaw_agent
 
 def student_agent(question):
 
@@ -41,10 +42,9 @@ NONE
     tool_result = None
 
     if tool_choice == "get_assignments":
-        tool_result = TOOLS["get_assignments"]()
+        tool_result = openclaw_agent.run("Get assignments")
     elif tool_choice == "detect_risks":
-        assignments = TOOLS["get_assignments"]()
-        tool_result = TOOLS["detect_risks"](assignments)
+        tool_result = openclaw_agent.run("Check urgent assignments")
 
     final_prompt = f"""
 You are a student assistant.
