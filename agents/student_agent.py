@@ -1,32 +1,43 @@
 from llm.groq_client import ask_llm
 from agents.tools_registry import TOOLS
 
-
 def student_agent(question):
 
-    # Step 1: Ask LLM which tool to use
     tool_prompt = f"""
 You are an AI assistant.
+
+Your job is to decide which tool to use.
 
 User question: {question}
 
 Available tools:
-- get_assignments → use when user asks about assignments or deadlines
+- get_assignments → for assignments, deadlines
 
-Respond ONLY with the tool name to use.
-If no tool needed, say NONE.
+Rules:
+- Respond with ONLY one word
+- Either "get_assignments" or "NONE"
+- Do NOT explain anything
+- Do NOT write sentences
+
+Answer:
 """
 
-    tool_choice = ask_llm(tool_prompt).strip()
+    tool_choice = ask_llm(tool_prompt).strip().lower()
 
-    # Step 2: Execute tool if needed
+    # Force clean output
+    if "get_assignments" in tool_choice:
+        tool_choice = "get_assignments"
+    else:
+        tool_choice = "none"
+
     tool_result = None
 
-    if tool_choice in TOOLS:
-        tool_result = TOOLS[tool_choice]()
+    if tool_choice == "get_assignments":
+        tool_result = TOOLS["get_assignments"]()
 
-    # Step 3: Generate final response
     final_prompt = f"""
+You are a student assistant.
+
 User question: {question}
 
 Tool used: {tool_choice}
@@ -34,7 +45,10 @@ Tool used: {tool_choice}
 Tool result:
 {tool_result}
 
-Generate a helpful answer.
+If tool result exists → use it.
+If not → answer normally.
+
+Give a helpful response.
 """
 
     return ask_llm(final_prompt)
