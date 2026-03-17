@@ -1,11 +1,15 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 from agents.student_agent import student_agent
 
 app = FastAPI()
 
-@app.post("/ask")
-async def ask_agent(question: str):
+class Query(BaseModel):
+    question: str
 
-    response = student_agent(question)
+@app.post("/ask")
+async def ask_agent(query: Query):
+
+    response = student_agent(query.question)
 
     return {"response": response}
