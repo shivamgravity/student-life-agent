@@ -4,9 +4,8 @@ from agents.student_agent import student_agent
 app = FastAPI()
 
 @app.post("/ask")
-
 async def ask_agent(question: str):
 
-    response = student_agent.run(question)
+    response = student_agent(question)
 
     return {"response": response}
