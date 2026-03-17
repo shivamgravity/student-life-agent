@@ -3,10 +3,7 @@ import time
 import os
 import sys
 
-target_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'agents'))
-sys.path.append(target_dir)
-target_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'telegram'))
-sys.path.append(target_dir)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from agents.student_agent import student_agent
 from telegram.send_message import send_telegram_message
