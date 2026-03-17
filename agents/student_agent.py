@@ -1,5 +1,4 @@
 from llm.groq_client import ask_llm
-from agents.tools_registry import TOOLS
 from agents.openclaw_agent import openclaw_agent
 
 def student_agent(question):
