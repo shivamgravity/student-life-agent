@@ -1,8 +1,11 @@
 from llm.groq_client import ask_llm
-from agents.openclaw_agent import openclaw_agent
+from agents.tools_registry import TOOLS
+from agents.openclaw_wrapper import openclaw_execute
+
 
 def student_agent(question):
 
+    # 🔹 Step 1: Tool selection prompt
     tool_prompt = f"""
 You are an AI assistant that selects tools.
 
@@ -25,10 +28,10 @@ NONE
 
     tool_choice = ask_llm(tool_prompt).strip().lower()
 
-    # debugging
-    print(f"Tool chosen: {tool_choice}")
+    # 🔹 Debugging
+    print(f"Tool chosen (LLM): {tool_choice}")
 
-    # Priority-based decision
+    # 🔥 Step 2: Rule-based override (deterministic)
     if "urgent" in question.lower() or "soon" in question.lower() or "deadline" in question.lower():
         tool_choice = "detect_risks"
     elif "get_assignments" in tool_choice:
@@ -38,13 +41,22 @@ NONE
     else:
         tool_choice = "none"
 
+    print(f"Tool chosen (final): {tool_choice}")
+
+    # 🔹 Step 3: Execute tool
     tool_result = None
 
     if tool_choice == "get_assignments":
-        tool_result = openclaw_agent.run("Get assignments")
-    elif tool_choice == "detect_risks":
-        tool_result = openclaw_agent.run("Check urgent assignments")
+        openclaw_execute("Fetching assignments using OpenClaw")
+        tool_result = TOOLS["get_assignments"]()
 
+    elif tool_choice == "detect_risks":
+        openclaw_execute("Checking urgent assignments using OpenClaw")
+
+        assignments = TOOLS["get_assignments"]()
+        tool_result = TOOLS["detect_risks"](assignments)
+
+    # 🔹 Step 4: Final response generation
     final_prompt = f"""
 You are a student assistant.
 
@@ -57,8 +69,9 @@ Tool result:
 
 IMPORTANT:
 - If tool_result contains warnings → show them clearly
-- DO NOT say "nothing urgent" if warnings exist
+- If tool_result is empty → say nothing urgent
 - DO NOT hallucinate
+- DO NOT invent assignments
 
 Answer clearly.
 """
