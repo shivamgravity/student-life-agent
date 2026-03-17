@@ -217,21 +217,6 @@ OpenClaw is used as the **execution layer** of the agent.
 
 ---
 
-## 💼 Resume Description
-
-> Built an autonomous AI student assistant using FastAPI, Groq Llama-3, and OpenClaw that proactively monitors assignments, detects urgent deadlines, and sends real-time notifications via Telegram.
-
----
-
-## 🎯 Demo Script (Quick Pitch)
-
-* "This is an autonomous AI agent, not just a chatbot."
-* "It runs on a schedule and proactively checks academic tasks."
-* "It uses LLM reasoning to decide actions and OpenClaw to execute them."
-* "It then sends real-time updates via Telegram."
-
----
-
 ## 🏆 Why This Project Stands Out
 
 * Goes beyond basic chatbots
