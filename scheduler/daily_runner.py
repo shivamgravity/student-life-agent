@@ -1,17 +1,30 @@
-import schedule
+import schedule # type: ignore
 import time
 
 from agents.student_agent import student_agent
+from telegram.send_message import send_telegram_message
+
 
 def run_daily_check():
 
-    result = student_agent.run(
-        "Check assignments and create today's study plan"
-    )
+    print("Running daily student check...")
 
-    print(result)
+    response = student_agent("Do I have anything urgent today?")
 
+    message = f"""
+📚 Daily Academic Update
+
+{response}
+"""
+
+    send_telegram_message(message)
+
+    print("Message sent!")
+
+
+# Run every day at 8 AM
 schedule.every().day.at("08:00").do(run_daily_check)
+
 
 while True:
     schedule.run_pending()
