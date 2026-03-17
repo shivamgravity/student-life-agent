@@ -28,10 +28,12 @@ NONE
     # debugging
     print(f"Tool chosen: {tool_choice}")
 
-    # Force clean output
-    if "get_assignments" in tool_choice:
+    # Priority-based decision
+    if "urgent" in question.lower() or "soon" in question.lower() or "deadline" in question.lower():
+        tool_choice = "detect_risks"
+    elif "get_assignments" in tool_choice:
         tool_choice = "get_assignments"
-    elif "detect_risks" in tool_choice or "urgent" in question.lower() or "soon" in question.lower() or "deadline" in question.lower():
+    elif "detect_risks" in tool_choice:
         tool_choice = "detect_risks"
     else:
         tool_choice = "none"
