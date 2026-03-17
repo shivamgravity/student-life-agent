@@ -11,15 +11,14 @@ Your job is to decide which tool to use.
 User question: {question}
 
 Available tools:
-- get_assignments → for assignments, deadlines
+- get_assignments → for assignments
+- detect_risks → for urgent deadlines
 
 Rules:
-- Respond with ONLY one word
-- Either "get_assignments" or "NONE"
-- Do NOT explain anything
-- Do NOT write sentences
-
-Answer:
+- Return ONLY one:
+- get_assignments
+- detect_risks
+- NONE
 """
 
     tool_choice = ask_llm(tool_prompt).strip().lower()
@@ -34,6 +33,9 @@ Answer:
 
     if tool_choice == "get_assignments":
         tool_result = TOOLS["get_assignments"]()
+    elif tool_choice == "detect_risks":
+        assignments = TOOLS["get_assignments"]()
+        tool_result = TOOLS["detect_risks"](assignments)
 
     final_prompt = f"""
 You are a student assistant.
