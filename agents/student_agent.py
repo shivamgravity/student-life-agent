@@ -4,21 +4,23 @@ from agents.tools_registry import TOOLS
 def student_agent(question):
 
     tool_prompt = f"""
-You are an AI assistant.
-
-Your job is to decide which tool to use.
+You are an AI assistant that selects tools.
 
 User question: {question}
 
 Available tools:
-- get_assignments → for assignments
-- detect_risks → for urgent deadlines
+- get_assignments → for assignments, deadlines, tasks
+- detect_risks → for urgency, urgent work, deadlines soon
 
 Rules:
-- Return ONLY one:
-- get_assignments
-- detect_risks
-- NONE
+- If question contains words like "urgent", "soon", "deadline" → use detect_risks
+- If question asks about assignments → use get_assignments
+- Otherwise → NONE
+
+Respond with ONLY:
+get_assignments
+detect_risks
+NONE
 """
 
     tool_choice = ask_llm(tool_prompt).strip().lower()
