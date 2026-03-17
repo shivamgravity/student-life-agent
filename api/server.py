@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI # type: ignore
 from pydantic import BaseModel
 from agents.student_agent import student_agent
 
