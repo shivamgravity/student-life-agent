@@ -1,6 +1,10 @@
 def get_assignments():
+    """
+    Returns a list of assignments with course, title, and due date.
+    Use this when user asks about assignments or deadlines.
+    """
 
-    assignments = [
+    return [
         {
             "course": "Machine Learning",
             "title": "ML Report",
@@ -12,5 +16,3 @@ def get_assignments():
             "due": "2026-03-18"
         }
     ]
-
-    return assignments
