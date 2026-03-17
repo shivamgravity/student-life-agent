@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from agents.student_agent import student_agent
-from telegram.send_message import send_telegram_message
+from telegram_utils.send_message import send_telegram_message
 
 
 def run_daily_check():
